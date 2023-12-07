@@ -1,0 +1,666 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище PhotocenterModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="ID_author" />
+          </Key>
+          <Property Name="ID_author" Type="int" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clienty">
+          <Key>
+            <PropertyRef Name="ID_clienta" />
+          </Key>
+          <Property Name="ID_clienta" Type="int" Nullable="false" />
+          <Property Name="Familiya" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Imya" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="E-mail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telefon" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dolgnosti">
+          <Key>
+            <PropertyRef Name="ID_dolgnosti" />
+          </Key>
+          <Property Name="ID_dolgnosti" Type="int" Nullable="false" />
+          <Property Name="Nazvanie_dolgnosti" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Photocenter.dbo.Kolichestvo_tovara" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Kolichestvo_tovara">
+          <Key>
+            <PropertyRef Name="ID_tovara" />
+            <PropertyRef Name="ID_zakaza" />
+          </Key>
+          <Property Name="ID_tovara" Type="int" Nullable="false" />
+          <Property Name="ID_zakaza" Type="int" Nullable="false" />
+          <Property Name="kolichestvo" Type="int" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Photocenter.dbo.Kolichestvo_uslug" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Kolichestvo_uslug">
+          <Key>
+            <PropertyRef Name="ID_usligi" />
+            <PropertyRef Name="ID_zakaza" />
+          </Key>
+          <Property Name="ID_usligi" Type="int" Nullable="false" />
+          <Property Name="ID_zakaza" Type="int" Nullable="false" />
+          <Property Name="kolichestvo" Type="int" />
+        </EntityType>
+        <EntityType Name="Sotrudniki">
+          <Key>
+            <PropertyRef Name="ID_sotrudnika" />
+          </Key>
+          <Property Name="ID_sotrudnika" Type="int" Nullable="false" />
+          <Property Name="Imya" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Familiya" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Otchestvo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_dolgnosti" Type="int" Nullable="false" />
+          <Property Name="Data_rogdeniya" Type="date" Nullable="false" />
+          <Property Name="Telefon" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="E-mail" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Status_zakaza">
+          <Key>
+            <PropertyRef Name="ID_statusa_zakaza" />
+          </Key>
+          <Property Name="ID_statusa_zakaza" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tovar">
+          <Key>
+            <PropertyRef Name="ID_tovara" />
+          </Key>
+          <Property Name="ID_tovara" Type="int" Nullable="false" />
+          <Property Name="Nazvanie_tovara" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cena_tovara" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Uslugi">
+          <Key>
+            <PropertyRef Name="ID_uslugi" />
+          </Key>
+          <Property Name="ID_uslugi" Type="int" Nullable="false" />
+          <Property Name="Nazvanie_uslugi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cena_uslugi" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Zakaz">
+          <Key>
+            <PropertyRef Name="ID_zakaza" />
+          </Key>
+          <Property Name="ID_zakaza" Type="int" Nullable="false" />
+          <Property Name="ID_statusa_zakaza" Type="int" Nullable="false" />
+          <Property Name="ID_clienta" Type="int" Nullable="false" />
+          <Property Name="ID_sotrudnika" Type="int" Nullable="false" />
+          <Property Name="Obshaya_cena" Type="money" />
+          <Property Name="data" Type="date" />
+        </EntityType>
+        <Association Name="FK_Kolichestvo_tovara_Tovar">
+          <End Role="Tovar" Type="Self.Tovar" Multiplicity="1" />
+          <End Role="Kolichestvo_tovara" Type="Self.Kolichestvo_tovara" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tovar">
+              <PropertyRef Name="ID_tovara" />
+            </Principal>
+            <Dependent Role="Kolichestvo_tovara">
+              <PropertyRef Name="ID_tovara" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kolichestvo_tovara_Zakaz">
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="1" />
+          <End Role="Kolichestvo_tovara" Type="Self.Kolichestvo_tovara" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zakaz">
+              <PropertyRef Name="ID_zakaza" />
+            </Principal>
+            <Dependent Role="Kolichestvo_tovara">
+              <PropertyRef Name="ID_zakaza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kolichestvo_uslug_Uslugi">
+          <End Role="Uslugi" Type="Self.Uslugi" Multiplicity="1" />
+          <End Role="Kolichestvo_uslug" Type="Self.Kolichestvo_uslug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uslugi">
+              <PropertyRef Name="ID_uslugi" />
+            </Principal>
+            <Dependent Role="Kolichestvo_uslug">
+              <PropertyRef Name="ID_usligi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kolichestvo_uslug_Zakaz">
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="1" />
+          <End Role="Kolichestvo_uslug" Type="Self.Kolichestvo_uslug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zakaz">
+              <PropertyRef Name="ID_zakaza" />
+            </Principal>
+            <Dependent Role="Kolichestvo_uslug">
+              <PropertyRef Name="ID_zakaza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sotrudniki_Author">
+          <End Role="Author" Type="Self.Author" Multiplicity="1" />
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="ID_author" />
+            </Principal>
+            <Dependent Role="Sotrudniki">
+              <PropertyRef Name="ID_sotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sotrudniki_Dolgnosti">
+          <End Role="Dolgnosti" Type="Self.Dolgnosti" Multiplicity="1" />
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dolgnosti">
+              <PropertyRef Name="ID_dolgnosti" />
+            </Principal>
+            <Dependent Role="Sotrudniki">
+              <PropertyRef Name="ID_dolgnosti" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zakaz_Clienty">
+          <End Role="Clienty" Type="Self.Clienty" Multiplicity="1" />
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clienty">
+              <PropertyRef Name="ID_clienta" />
+            </Principal>
+            <Dependent Role="Zakaz">
+              <PropertyRef Name="ID_clienta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zakaz_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="ID_sotrudnika" />
+            </Principal>
+            <Dependent Role="Zakaz">
+              <PropertyRef Name="ID_sotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zakaz_Status_zakaza">
+          <End Role="Status_zakaza" Type="Self.Status_zakaza" Multiplicity="1" />
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status_zakaza">
+              <PropertyRef Name="ID_statusa_zakaza" />
+            </Principal>
+            <Dependent Role="Zakaz">
+              <PropertyRef Name="ID_statusa_zakaza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище PhotocenterModelContainer">
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clienty" EntityType="Self.Clienty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dolgnosti" EntityType="Self.Dolgnosti" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sotrudniki" EntityType="Self.Sotrudniki" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status_zakaza" EntityType="Self.Status_zakaza" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tovar" EntityType="Self.Tovar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Uslugi" EntityType="Self.Uslugi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zakaz" EntityType="Self.Zakaz" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kolichestvo_tovara" EntityType="Self.Kolichestvo_tovara" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Kolichestvo_tovara].[ID_tovara] AS [ID_tovara], 
+    [Kolichestvo_tovara].[ID_zakaza] AS [ID_zakaza], 
+    [Kolichestvo_tovara].[kolichestvo] AS [kolichestvo]
+    FROM [dbo].[Kolichestvo_tovara] AS [Kolichestvo_tovara]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Kolichestvo_uslug" EntityType="Self.Kolichestvo_uslug" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Kolichestvo_uslug].[ID_usligi] AS [ID_usligi], 
+    [Kolichestvo_uslug].[ID_zakaza] AS [ID_zakaza], 
+    [Kolichestvo_uslug].[kolichestvo] AS [kolichestvo]
+    FROM [dbo].[Kolichestvo_uslug] AS [Kolichestvo_uslug]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Kolichestvo_tovara_Tovar" Association="Self.FK_Kolichestvo_tovara_Tovar">
+            <End Role="Tovar" EntitySet="Tovar" />
+            <End Role="Kolichestvo_tovara" EntitySet="Kolichestvo_tovara" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kolichestvo_tovara_Zakaz" Association="Self.FK_Kolichestvo_tovara_Zakaz">
+            <End Role="Zakaz" EntitySet="Zakaz" />
+            <End Role="Kolichestvo_tovara" EntitySet="Kolichestvo_tovara" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kolichestvo_uslug_Uslugi" Association="Self.FK_Kolichestvo_uslug_Uslugi">
+            <End Role="Uslugi" EntitySet="Uslugi" />
+            <End Role="Kolichestvo_uslug" EntitySet="Kolichestvo_uslug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kolichestvo_uslug_Zakaz" Association="Self.FK_Kolichestvo_uslug_Zakaz">
+            <End Role="Zakaz" EntitySet="Zakaz" />
+            <End Role="Kolichestvo_uslug" EntitySet="Kolichestvo_uslug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sotrudniki_Author" Association="Self.FK_Sotrudniki_Author">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sotrudniki_Dolgnosti" Association="Self.FK_Sotrudniki_Dolgnosti">
+            <End Role="Dolgnosti" EntitySet="Dolgnosti" />
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zakaz_Clienty" Association="Self.FK_Zakaz_Clienty">
+            <End Role="Clienty" EntitySet="Clienty" />
+            <End Role="Zakaz" EntitySet="Zakaz" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zakaz_Sotrudniki" Association="Self.FK_Zakaz_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="Zakaz" EntitySet="Zakaz" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zakaz_Status_zakaza" Association="Self.FK_Zakaz_Status_zakaza">
+            <End Role="Status_zakaza" EntitySet="Status_zakaza" />
+            <End Role="Zakaz" EntitySet="Zakaz" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PhotocenterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="ID_author" />
+          </Key>
+          <Property Name="ID_author" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_Sotrudniki_Author" FromRole="Author" ToRole="Sotrudniki" />
+        </EntityType>
+        <EntityType Name="Clienty">
+          <Key>
+            <PropertyRef Name="ID_clienta" />
+          </Key>
+          <Property Name="ID_clienta" Type="Int32" Nullable="false" />
+          <Property Name="Familiya" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Imya" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="E_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Zakaz" Relationship="Self.FK_Zakaz_Clienty" FromRole="Clienty" ToRole="Zakaz" />
+        </EntityType>
+        <EntityType Name="Dolgnosti">
+          <Key>
+            <PropertyRef Name="ID_dolgnosti" />
+          </Key>
+          <Property Name="ID_dolgnosti" Type="Int32" Nullable="false" />
+          <Property Name="Nazvanie_dolgnosti" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_Sotrudniki_Dolgnosti" FromRole="Dolgnosti" ToRole="Sotrudniki" />
+        </EntityType>
+        <EntityType Name="Sotrudniki">
+          <Key>
+            <PropertyRef Name="ID_sotrudnika" />
+          </Key>
+          <Property Name="ID_sotrudnika" Type="Int32" Nullable="false" />
+          <Property Name="Imya" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Familiya" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Otchestvo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_dolgnosti" Type="Int32" Nullable="false" />
+          <Property Name="Data_rogdeniya" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Telefon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="E_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Author" Relationship="Self.FK_Sotrudniki_Author" FromRole="Sotrudniki" ToRole="Author" />
+          <NavigationProperty Name="Dolgnosti" Relationship="Self.FK_Sotrudniki_Dolgnosti" FromRole="Sotrudniki" ToRole="Dolgnosti" />
+          <NavigationProperty Name="Zakaz" Relationship="Self.FK_Zakaz_Sotrudniki" FromRole="Sotrudniki" ToRole="Zakaz" />
+        </EntityType>
+        <EntityType Name="Status_zakaza">
+          <Key>
+            <PropertyRef Name="ID_statusa_zakaza" />
+          </Key>
+          <Property Name="ID_statusa_zakaza" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Zakaz" Relationship="Self.FK_Zakaz_Status_zakaza" FromRole="Status_zakaza" ToRole="Zakaz" />
+        </EntityType>
+        <EntityType Name="Tovar">
+          <Key>
+            <PropertyRef Name="ID_tovara" />
+          </Key>
+          <Property Name="ID_tovara" Type="Int32" Nullable="false" />
+          <Property Name="Nazvanie_tovara" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cena_tovara" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Kolichestvo_tovara" Relationship="Self.FK_Kolichestvo_tovara_Tovar" FromRole="Tovar" ToRole="Kolichestvo_tovara" />
+        </EntityType>
+        <EntityType Name="Uslugi">
+          <Key>
+            <PropertyRef Name="ID_uslugi" />
+          </Key>
+          <Property Name="ID_uslugi" Type="Int32" Nullable="false" />
+          <Property Name="Nazvanie_uslugi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cena_uslugi" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Kolichestvo_uslug" Relationship="Self.FK_Kolichestvo_uslug_Uslugi" FromRole="Uslugi" ToRole="Kolichestvo_uslug" />
+        </EntityType>
+        <EntityType Name="Zakaz">
+          <Key>
+            <PropertyRef Name="ID_zakaza" />
+          </Key>
+          <Property Name="ID_zakaza" Type="Int32" Nullable="false" />
+          <Property Name="ID_statusa_zakaza" Type="Int32" Nullable="false" />
+          <Property Name="ID_clienta" Type="Int32" Nullable="false" />
+          <Property Name="ID_sotrudnika" Type="Int32" Nullable="false" />
+          <Property Name="Obshaya_cena" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="data" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Clienty" Relationship="Self.FK_Zakaz_Clienty" FromRole="Zakaz" ToRole="Clienty" />
+          <NavigationProperty Name="Sotrudniki" Relationship="Self.FK_Zakaz_Sotrudniki" FromRole="Zakaz" ToRole="Sotrudniki" />
+          <NavigationProperty Name="Status_zakaza" Relationship="Self.FK_Zakaz_Status_zakaza" FromRole="Zakaz" ToRole="Status_zakaza" />
+          <NavigationProperty Name="Kolichestvo_tovara" Relationship="Self.FK_Kolichestvo_tovara_Zakaz" FromRole="Zakaz" ToRole="Kolichestvo_tovara" />
+          <NavigationProperty Name="Kolichestvo_uslug" Relationship="Self.FK_Kolichestvo_uslug_Zakaz" FromRole="Zakaz" ToRole="Kolichestvo_uslug" />
+        </EntityType>
+        <EntityType Name="Kolichestvo_tovara">
+          <Key>
+            <PropertyRef Name="ID_tovara" />
+            <PropertyRef Name="ID_zakaza" />
+          </Key>
+          <Property Name="ID_tovara" Type="Int32" Nullable="false" />
+          <Property Name="ID_zakaza" Type="Int32" Nullable="false" />
+          <Property Name="kolichestvo" Type="Int32" />
+          <NavigationProperty Name="Tovar" Relationship="Self.FK_Kolichestvo_tovara_Tovar" FromRole="Kolichestvo_tovara" ToRole="Tovar" />
+          <NavigationProperty Name="Zakaz" Relationship="Self.FK_Kolichestvo_tovara_Zakaz" FromRole="Kolichestvo_tovara" ToRole="Zakaz" />
+        </EntityType>
+        <EntityType Name="Kolichestvo_uslug">
+          <Key>
+            <PropertyRef Name="ID_usligi" />
+            <PropertyRef Name="ID_zakaza" />
+          </Key>
+          <Property Name="ID_usligi" Type="Int32" Nullable="false" />
+          <Property Name="ID_zakaza" Type="Int32" Nullable="false" />
+          <Property Name="kolichestvo" Type="Int32" />
+          <NavigationProperty Name="Uslugi" Relationship="Self.FK_Kolichestvo_uslug_Uslugi" FromRole="Kolichestvo_uslug" ToRole="Uslugi" />
+          <NavigationProperty Name="Zakaz" Relationship="Self.FK_Kolichestvo_uslug_Zakaz" FromRole="Kolichestvo_uslug" ToRole="Zakaz" />
+        </EntityType>
+        <Association Name="FK_Sotrudniki_Author">
+          <End Role="Author" Type="Self.Author" Multiplicity="1" />
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="ID_author" />
+            </Principal>
+            <Dependent Role="Sotrudniki">
+              <PropertyRef Name="ID_sotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zakaz_Clienty">
+          <End Role="Clienty" Type="Self.Clienty" Multiplicity="1" />
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clienty">
+              <PropertyRef Name="ID_clienta" />
+            </Principal>
+            <Dependent Role="Zakaz">
+              <PropertyRef Name="ID_clienta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sotrudniki_Dolgnosti">
+          <End Role="Dolgnosti" Type="Self.Dolgnosti" Multiplicity="1" />
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dolgnosti">
+              <PropertyRef Name="ID_dolgnosti" />
+            </Principal>
+            <Dependent Role="Sotrudniki">
+              <PropertyRef Name="ID_dolgnosti" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zakaz_Sotrudniki">
+          <End Role="Sotrudniki" Type="Self.Sotrudniki" Multiplicity="1" />
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sotrudniki">
+              <PropertyRef Name="ID_sotrudnika" />
+            </Principal>
+            <Dependent Role="Zakaz">
+              <PropertyRef Name="ID_sotrudnika" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zakaz_Status_zakaza">
+          <End Role="Status_zakaza" Type="Self.Status_zakaza" Multiplicity="1" />
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status_zakaza">
+              <PropertyRef Name="ID_statusa_zakaza" />
+            </Principal>
+            <Dependent Role="Zakaz">
+              <PropertyRef Name="ID_statusa_zakaza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kolichestvo_tovara_Tovar">
+          <End Role="Tovar" Type="Self.Tovar" Multiplicity="1" />
+          <End Role="Kolichestvo_tovara" Type="Self.Kolichestvo_tovara" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tovar">
+              <PropertyRef Name="ID_tovara" />
+            </Principal>
+            <Dependent Role="Kolichestvo_tovara">
+              <PropertyRef Name="ID_tovara" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kolichestvo_uslug_Uslugi">
+          <End Role="Uslugi" Type="Self.Uslugi" Multiplicity="1" />
+          <End Role="Kolichestvo_uslug" Type="Self.Kolichestvo_uslug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uslugi">
+              <PropertyRef Name="ID_uslugi" />
+            </Principal>
+            <Dependent Role="Kolichestvo_uslug">
+              <PropertyRef Name="ID_usligi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kolichestvo_tovara_Zakaz">
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="1" />
+          <End Role="Kolichestvo_tovara" Type="Self.Kolichestvo_tovara" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zakaz">
+              <PropertyRef Name="ID_zakaza" />
+            </Principal>
+            <Dependent Role="Kolichestvo_tovara">
+              <PropertyRef Name="ID_zakaza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kolichestvo_uslug_Zakaz">
+          <End Role="Zakaz" Type="Self.Zakaz" Multiplicity="1" />
+          <End Role="Kolichestvo_uslug" Type="Self.Kolichestvo_uslug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zakaz">
+              <PropertyRef Name="ID_zakaza" />
+            </Principal>
+            <Dependent Role="Kolichestvo_uslug">
+              <PropertyRef Name="ID_zakaza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PhotocenterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Author" EntityType="Self.Author" />
+          <EntitySet Name="Clienty" EntityType="Self.Clienty" />
+          <EntitySet Name="Dolgnosti" EntityType="Self.Dolgnosti" />
+          <EntitySet Name="Sotrudniki" EntityType="Self.Sotrudniki" />
+          <EntitySet Name="Status_zakaza" EntityType="Self.Status_zakaza" />
+          <EntitySet Name="Tovar" EntityType="Self.Tovar" />
+          <EntitySet Name="Uslugi" EntityType="Self.Uslugi" />
+          <EntitySet Name="Zakaz" EntityType="Self.Zakaz" />
+          <EntitySet Name="Kolichestvo_tovara" EntityType="Self.Kolichestvo_tovara" />
+          <EntitySet Name="Kolichestvo_uslug" EntityType="Self.Kolichestvo_uslug" />
+          <AssociationSet Name="FK_Sotrudniki_Author" Association="Self.FK_Sotrudniki_Author">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zakaz_Clienty" Association="Self.FK_Zakaz_Clienty">
+            <End Role="Clienty" EntitySet="Clienty" />
+            <End Role="Zakaz" EntitySet="Zakaz" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sotrudniki_Dolgnosti" Association="Self.FK_Sotrudniki_Dolgnosti">
+            <End Role="Dolgnosti" EntitySet="Dolgnosti" />
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zakaz_Sotrudniki" Association="Self.FK_Zakaz_Sotrudniki">
+            <End Role="Sotrudniki" EntitySet="Sotrudniki" />
+            <End Role="Zakaz" EntitySet="Zakaz" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zakaz_Status_zakaza" Association="Self.FK_Zakaz_Status_zakaza">
+            <End Role="Status_zakaza" EntitySet="Status_zakaza" />
+            <End Role="Zakaz" EntitySet="Zakaz" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kolichestvo_tovara_Tovar" Association="Self.FK_Kolichestvo_tovara_Tovar">
+            <End Role="Tovar" EntitySet="Tovar" />
+            <End Role="Kolichestvo_tovara" EntitySet="Kolichestvo_tovara" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kolichestvo_uslug_Uslugi" Association="Self.FK_Kolichestvo_uslug_Uslugi">
+            <End Role="Uslugi" EntitySet="Uslugi" />
+            <End Role="Kolichestvo_uslug" EntitySet="Kolichestvo_uslug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kolichestvo_tovara_Zakaz" Association="Self.FK_Kolichestvo_tovara_Zakaz">
+            <End Role="Zakaz" EntitySet="Zakaz" />
+            <End Role="Kolichestvo_tovara" EntitySet="Kolichestvo_tovara" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kolichestvo_uslug_Zakaz" Association="Self.FK_Kolichestvo_uslug_Zakaz">
+            <End Role="Zakaz" EntitySet="Zakaz" />
+            <End Role="Kolichestvo_uslug" EntitySet="Kolichestvo_uslug" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PhotocenterModelContainer" CdmEntityContainer="PhotocenterEntities">
+          <EntitySetMapping Name="Author">
+            <EntityTypeMapping TypeName="PhotocenterModel.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="ID_author" ColumnName="ID_author" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clienty">
+            <EntityTypeMapping TypeName="PhotocenterModel.Clienty">
+              <MappingFragment StoreEntitySet="Clienty">
+                <ScalarProperty Name="ID_clienta" ColumnName="ID_clienta" />
+                <ScalarProperty Name="Familiya" ColumnName="Familiya" />
+                <ScalarProperty Name="Imya" ColumnName="Imya" />
+                <ScalarProperty Name="E_mail" ColumnName="E-mail" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dolgnosti">
+            <EntityTypeMapping TypeName="PhotocenterModel.Dolgnosti">
+              <MappingFragment StoreEntitySet="Dolgnosti">
+                <ScalarProperty Name="ID_dolgnosti" ColumnName="ID_dolgnosti" />
+                <ScalarProperty Name="Nazvanie_dolgnosti" ColumnName="Nazvanie_dolgnosti" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sotrudniki">
+            <EntityTypeMapping TypeName="PhotocenterModel.Sotrudniki">
+              <MappingFragment StoreEntitySet="Sotrudniki">
+                <ScalarProperty Name="ID_sotrudnika" ColumnName="ID_sotrudnika" />
+                <ScalarProperty Name="Imya" ColumnName="Imya" />
+                <ScalarProperty Name="Familiya" ColumnName="Familiya" />
+                <ScalarProperty Name="Otchestvo" ColumnName="Otchestvo" />
+                <ScalarProperty Name="ID_dolgnosti" ColumnName="ID_dolgnosti" />
+                <ScalarProperty Name="Data_rogdeniya" ColumnName="Data_rogdeniya" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="E_mail" ColumnName="E-mail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status_zakaza">
+            <EntityTypeMapping TypeName="PhotocenterModel.Status_zakaza">
+              <MappingFragment StoreEntitySet="Status_zakaza">
+                <ScalarProperty Name="ID_statusa_zakaza" ColumnName="ID_statusa_zakaza" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tovar">
+            <EntityTypeMapping TypeName="PhotocenterModel.Tovar">
+              <MappingFragment StoreEntitySet="Tovar">
+                <ScalarProperty Name="ID_tovara" ColumnName="ID_tovara" />
+                <ScalarProperty Name="Nazvanie_tovara" ColumnName="Nazvanie_tovara" />
+                <ScalarProperty Name="Cena_tovara" ColumnName="Cena_tovara" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Uslugi">
+            <EntityTypeMapping TypeName="PhotocenterModel.Uslugi">
+              <MappingFragment StoreEntitySet="Uslugi">
+                <ScalarProperty Name="ID_uslugi" ColumnName="ID_uslugi" />
+                <ScalarProperty Name="Nazvanie_uslugi" ColumnName="Nazvanie_uslugi" />
+                <ScalarProperty Name="Cena_uslugi" ColumnName="Cena_uslugi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zakaz">
+            <EntityTypeMapping TypeName="PhotocenterModel.Zakaz">
+              <MappingFragment StoreEntitySet="Zakaz">
+                <ScalarProperty Name="ID_zakaza" ColumnName="ID_zakaza" />
+                <ScalarProperty Name="ID_statusa_zakaza" ColumnName="ID_statusa_zakaza" />
+                <ScalarProperty Name="ID_clienta" ColumnName="ID_clienta" />
+                <ScalarProperty Name="ID_sotrudnika" ColumnName="ID_sotrudnika" />
+                <ScalarProperty Name="Obshaya_cena" ColumnName="Obshaya_cena" />
+                <ScalarProperty Name="data" ColumnName="data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kolichestvo_tovara">
+            <EntityTypeMapping TypeName="PhotocenterModel.Kolichestvo_tovara">
+              <MappingFragment StoreEntitySet="Kolichestvo_tovara">
+                <ScalarProperty Name="ID_tovara" ColumnName="ID_tovara" />
+                <ScalarProperty Name="ID_zakaza" ColumnName="ID_zakaza" />
+                <ScalarProperty Name="kolichestvo" ColumnName="kolichestvo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kolichestvo_uslug">
+            <EntityTypeMapping TypeName="PhotocenterModel.Kolichestvo_uslug">
+              <MappingFragment StoreEntitySet="Kolichestvo_uslug">
+                <ScalarProperty Name="ID_usligi" ColumnName="ID_usligi" />
+                <ScalarProperty Name="ID_zakaza" ColumnName="ID_zakaza" />
+                <ScalarProperty Name="kolichestvo" ColumnName="kolichestvo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

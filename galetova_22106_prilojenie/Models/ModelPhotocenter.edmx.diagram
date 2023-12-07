@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7c86f314186c4ea0a43740dcdd069042" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="PhotocenterModel.Author" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Clienty" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Dolgnosti" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Sotrudniki" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Status_zakaza" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Tovar" Width="1.5" PointX="5.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Uslugi" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Zakaz" Width="1.5" PointX="5.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Kolichestvo_tovara" Width="1.5" PointX="7.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotocenterModel.Kolichestvo_uslug" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="PhotocenterModel.FK_Sotrudniki_Author" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Zakaz_Clienty" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Sotrudniki_Dolgnosti" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Zakaz_Sotrudniki" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Zakaz_Status_zakaza" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Kolichestvo_tovara_Tovar" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Kolichestvo_uslug_Uslugi" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Kolichestvo_tovara_Zakaz" ManuallyRouted="false" />
+        <AssociationConnector Association="PhotocenterModel.FK_Kolichestvo_uslug_Zakaz" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
